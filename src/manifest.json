@@ -1,0 +1,12 @@
+{
+  "name": "procrastin8",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "permissions": [
+    "*://*/*"
+  ],
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["index.js"]
+  }]
+}

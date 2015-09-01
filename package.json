@@ -1,0 +1,15 @@
+{
+  "name": "procrastin8",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "preferGlobal": "false",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ewnd9/procrastin8.git"
+  },
+  "author": "ewnd9 <ewndnine@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
