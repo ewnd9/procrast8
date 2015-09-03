@@ -1,5 +1,5 @@
 var bads = ['twitter.com', 'vk.com'];
-var good = 'http://www.memrise.com/home/';
+var good = localStorage['good'] || 'http://www.memrise.com/home/';
 
 var check = function(tab) {
   var el = document.createElement('a');
@@ -7,7 +7,7 @@ var check = function(tab) {
   var host = el.hostname;
 
   if (bads.indexOf(host) > -1) {
-    chrome.tabs.update(tab.id, { url: 'http://www.memrise.com/home/' }, function() {
+    chrome.tabs.update(tab.id, { url: good }, function() {
 
     });
   }
