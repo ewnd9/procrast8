@@ -1,6 +1,6 @@
 # procrastin8
 
-:warning: Deprication notice: just put `127.0.0.1 {domain}` to `/etc/hosts` in case of a bad habit
+:warning: Deprecation notice: just put `127.0.0.1 {domain}` to `/etc/hosts` in case of a bad habit
 
 Chrome extension that redirects from time wasting sites to useful one
 
