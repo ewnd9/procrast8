@@ -4,6 +4,7 @@
   "manifest_version": 2,
   "permissions": [
     "tabs",
+    "storage",
     "*://*/*"
   ],
   "content_scripts": [{
@@ -12,5 +13,6 @@
   }],
   "background": {
     "scripts": [ "background.js" ]
-  }
+  },
+  "options_page": "options.html"
 }

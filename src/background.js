@@ -1,19 +1,38 @@
-var bads = ['twitter.com', 'vk.com'];
-var good = localStorage['good'] || 'http://www.memrise.com/home/';
+'use strict';
 
-var check = function(tab) {
-  var el = document.createElement('a');
-  el.href = tab.url;
-  var host = el.hostname;
-
-  if (bads.indexOf(host) > -1) {
-    chrome.tabs.update(tab.id, { url: good }, function() {
-
-    });
+chrome.runtime.onMessage.addListener((request, options, sendResponse) => {
+  if (request.type === 'reload') {
+    init();
   }
-};
-
-chrome.tabs.onCreated.addListener(check);
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-  check(tab);
 });
+
+init();
+
+function init() {
+  chrome.storage.sync.get({
+    badDomains: 'twitter.com',
+    redirectTo: 'reddit.com'
+  }, function({ badDomains: _badDomains, redirectTo: _redirectTo }) {
+    const badDomains = (_badDomains || '').split(/,\s/g);
+    const redirectTo = _redirectTo.indexOf('http') === 0 ? _redirectTo : `https://${_redirectTo}`;
+
+    chrome.tabs.onCreated.removeListener(checkNewTab);
+    chrome.tabs.onCreated.addListener(checkNewTab);
+    chrome.tabs.onUpdated.removeListener(checkUpdatedTab);
+    chrome.tabs.onUpdated.addListener(checkUpdatedTab);
+
+    function checkUpdatedTab(id, status, tab) {
+      checkNewTab(tab);
+    }
+
+    function checkNewTab(tab) {
+      const el = document.createElement('a');
+      el.href = tab.url;
+      const host = el.hostname;
+
+      if (badDomains.indexOf(host) > -1) {
+        chrome.tabs.update(tab.id, { url: redirectTo });
+      }
+    }
+  });
+}
