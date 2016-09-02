@@ -29,11 +29,10 @@ function checkUpdatedTab(id, status, tab) {
 }
 
 function checkNewTab(tab) {
-  const el = document.createElement('a');
-  el.href = tab.url;
-  const host = el.hostname;
-
-  if (badDomains.indexOf(host) > -1) {
-    chrome.tabs.update(tab.id, { url: redirectTo });
+  for (let url of badDomains) {
+    if (tab.url.indexOf(url) > -1) {
+      chrome.tabs.update(tab.id, { url: redirectTo });
+      break;
+    }
   }
 }
