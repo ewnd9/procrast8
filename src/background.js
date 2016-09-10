@@ -14,6 +14,12 @@ chrome.tabs.onUpdated.addListener(checkUpdatedTab);
 
 init();
 
+chrome.contextMenus.create({
+  title: 'procrastin8: set as the redirect destination',
+  contexts: ['all'],
+  onclick: onContextMenuClick
+});
+
 function init() {
   chrome.storage.sync.get({
     badDomains: 'twitter.com',
@@ -35,4 +41,12 @@ function checkNewTab(tab) {
       break;
     }
   }
+}
+
+function onContextMenuClick(info, tab) {
+  chrome.storage.sync.set({
+    redirectTo: info.pageUrl
+  }, function() {
+    init();
+  });
 }
