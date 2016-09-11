@@ -2,6 +2,10 @@
   "name": "procrastin8",
   "version": "0.0.2",
   "private": true,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && mkdir dist && cp src/* dist && cp -R media/icons dist/icons"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ewnd9/procrastin8.git"
