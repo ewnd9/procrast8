@@ -3,8 +3,10 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
+    "build": "npm run clean && mkdir dist && cp src/* dist && node scripts/bundle.js && cp -R media/icons dist/icons",
     "clean": "rm -rf dist",
-    "build": "npm run clean && mkdir dist && cp src/* dist && node scripts/bundle.js && cp -R media/icons dist/icons"
+    "lint": "eslint 'src/**/*.js'",
+    "precommit": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -17,8 +19,11 @@
     "csjs": "^1.0.6"
   },
   "devDependencies": {
+    "babel-eslint": "^6.0.0",
     "babel-preset-stage-0": "^6.5.0",
     "babelify": "^7.3.0",
-    "csjs-injectify": "^1.0.1"
+    "csjs-injectify": "^1.0.1",
+    "eslint": "^3.0.0",
+    "husky": "^0.11.6"
   }
 }

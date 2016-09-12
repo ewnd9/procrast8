@@ -2,8 +2,6 @@
 
 const choo = require('choo');
 const html = require('choo/html');
-
-const csjs = require('csjs');
 const styles = require('./options-styles');
 
 chrome.storage.sync.get({

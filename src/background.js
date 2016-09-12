@@ -1,6 +1,6 @@
 'use strict';
 
-chrome.runtime.onMessage.addListener((request, options, sendResponse) => {
+chrome.runtime.onMessage.addListener(request => {
   if (request.type === 'reload') {
     init();
   }
@@ -43,7 +43,7 @@ function checkNewTab(tab) {
   }
 }
 
-function onContextMenuClick(info, tab) {
+function onContextMenuClick(info) {
   chrome.storage.sync.set({
     redirectTo: info.pageUrl
   }, function() {
