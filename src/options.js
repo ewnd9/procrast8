@@ -1,36 +1,64 @@
 'use strict';
 
-document.addEventListener('DOMContentLoaded', init);
+const choo = require('choo');
+const html = require('choo/html');
 
-let badDomainsInput;
-let redirectToInput;
+const csjs = require('csjs');
+const styles = require('./options-styles');
 
-function init() {
-  badDomainsInput = document.getElementById('bad-domains');
-  badDomainsInput.addEventListener('input', saveOptions);
+chrome.storage.sync.get({
+  badDomains: 'twitter.com',
+  redirectTo: 'reddit.com'
+}, function({ badDomains, redirectTo }) {
+  const app = choo();
 
-  redirectToInput = document.getElementById('redirect');
-  redirectToInput.addEventListener('input', saveOptions);
+  app.model({
+    state: {
+      badDomains,
+      redirectTo
+    },
+    effects: {
+      save({ field, value }, state, send, done) {
+        const nextState = { ...state, [field]: value };
+        const { badDomains, redirectTo } = nextState;
 
-  chrome.storage.sync.get({
-    badDomains: 'twitter.com',
-    redirectTo: 'reddit.com'
-  }, function({ badDomains, redirectTo }) {
-    badDomainsInput.value = badDomains;
-    redirectToInput.value = redirectTo;
+        send('update', nextState, () => {});
+
+        chrome.storage.sync.set({
+          badDomains,
+          redirectTo
+        }, function() {
+          chrome.runtime.sendMessage({ type: 'reload' }, () => done());
+        });
+      }
+    },
+    reducers: {
+      update: data => data
+    }
   });
-}
 
-function saveOptions() {
-  const badDomains = badDomainsInput.value;
-  const redirectTo = redirectToInput.value;
+  const Input = (state, send, field) => html`
+    <input type="text" class=${styles.formControl} value=${state[field]} oninput=${e => send('save', { field, value: e.target.value })} />
+  `;
 
-  chrome.storage.sync.set({
-    badDomains,
-    redirectTo
-  }, function() {
-    chrome.runtime.sendMessage({ type: 'reload' }, function(response) {
-      console.log(response)
-    });
-  });
-}
+  const mainView = (state, prev, send) => html`
+    <main class=${styles.container}>
+      <label class=${styles.formLabel}>
+        Bad domains:
+        ${Input(state, send, 'badDomains')}
+      </label>
+
+      <label class=${styles.formLabel}>
+        Redirect to:
+        ${Input(state, send, 'redirectTo')}
+      </label>
+    </main>
+  `;
+
+  app.router(route => [
+    route('/', mainView)
+  ]);
+
+  const tree = app.start();
+  document.body.appendChild(tree);
+});

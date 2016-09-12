@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf dist",
-    "build": "npm run clean && mkdir dist && cp src/* dist && cp -R media/icons dist/icons"
+    "build": "npm run clean && mkdir dist && cp src/* dist && node scripts/bundle.js && cp -R media/icons dist/icons"
   },
   "repository": {
     "type": "git",
@@ -12,6 +12,13 @@
   },
   "author": "ewnd9 <ewndnine@gmail.com>",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "choo": "^3.3.0",
+    "csjs": "^1.0.6"
+  },
+  "devDependencies": {
+    "babel-preset-stage-0": "^6.5.0",
+    "babelify": "^7.3.0",
+    "csjs-injectify": "^1.0.1"
+  }
 }
