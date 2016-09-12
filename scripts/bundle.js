@@ -14,8 +14,10 @@ const bundler = new Browserify({ debug: true, entries: [main] });
 
 bundler
   .transform('babelify', { presets: ['es2015', 'stage-0'] } )
-  .transform('envify')
+  .transform('envify', { global: true })
   .transform('csjs-injectify')
+  .transform('yo-yoify', { global: true })
+  .transform('unassertify', { global: true })
   .plugin('minifyify', { map: destMap })
 
 bundler.bundle(function (err, src, map) {
