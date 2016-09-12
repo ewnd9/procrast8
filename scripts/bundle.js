@@ -13,12 +13,12 @@ const destDisc = __dirname + '/disc.html';
 const bundler = new Browserify({ debug: true, entries: [main] });
 
 bundler
-  .transform('babelify', { presets: ['es2015', 'stage-0'] } )
+  .transform('yo-yoify', { global: true })
+  .transform('babelify', { presets: ['stage-0'] } )
   .transform('envify', { global: true })
   .transform('csjs-injectify')
-  .transform('yo-yoify', { global: true })
   .transform('unassertify', { global: true })
-  .plugin('minifyify', { map: destMap })
+  .plugin('minifyify', { map: destMap });
 
 bundler.bundle(function (err, src, map) {
   if (err) {
