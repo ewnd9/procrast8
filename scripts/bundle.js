@@ -1,10 +1,28 @@
 'use strict';
 
-const fs = require('fs');
-const browserify = require('browserify');
+process.env.NODE_ENV = 'production';
 
-browserify(__dirname + '/../src/options.js')
-  .transform('babelify', { presets: ['stage-0'] } )
+const fs = require('fs');
+const Browserify = require('browserify');
+
+const main = __dirname + '/../src/options.js';
+const destSrc = __dirname + '/../dist/options.js';
+const destMap = __dirname + '/../dist/options.js.map';
+const destDisc = __dirname + '/disc.html';
+
+const bundler = new Browserify({ debug: true, entries: [main] });
+
+bundler
+  .transform('babelify', { presets: ['es2015', 'stage-0'] } )
+  .transform('envify')
   .transform('csjs-injectify')
-  .bundle()
-  .pipe(fs.createWriteStream(__dirname + '/../dist/options.js'));
+  .plugin('minifyify', { map: destMap })
+
+bundler.bundle(function (err, src, map) {
+  if (err) {
+    console.error('error loading ', mainfile);
+  } else {
+    fs.writeFile(destSrc, src);
+    fs.writeFile(destMap, map);
+  }
+});

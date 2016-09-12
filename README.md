@@ -9,6 +9,12 @@ Chrome extension that redirects from time wasting sites to a useful one
 - Click `Load unpacked extension...`
 - Select `src` folder
 
+## Development
+
+```sh
+$ npm run build
+```
+
 ## Credits
 
 [Icon](http://www.flaticon.com/free-icon/parking-sign_67297)
