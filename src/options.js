@@ -10,6 +10,11 @@ chrome.storage.sync.get({
 }, function({ badDomains, redirectTo }) {
   const app = choo();
 
+  if (process.env.NODE_ENV !== 'production') {
+    const log = require('choo-log');
+    app.use(log());
+  }
+
   app.model({
     state: {
       badDomains,

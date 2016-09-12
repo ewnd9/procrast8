@@ -1,6 +1,8 @@
 'use strict';
 
-process.env.NODE_ENV = 'production';
+if (!process.env.NODE_ENV) {
+  process.env.NODE_ENV = 'production';
+}
 
 const fs = require('fs');
 const Browserify = require('browserify');
