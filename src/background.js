@@ -24,7 +24,7 @@ function init() {
   chrome.storage.sync.get({
     badDomains: 'twitter.com',
     redirectTo: 'reddit.com'
-  }, function({ badDomains: _badDomains, redirectTo: _redirectTo }) {
+  }, function ({ badDomains: _badDomains, redirectTo: _redirectTo }) {
     badDomains = (_badDomains || '').split(/,\s/g);
     redirectTo = _redirectTo.indexOf('http') === 0 ? _redirectTo : `https://${_redirectTo}`;
   });
@@ -36,6 +36,7 @@ function checkUpdatedTab(id, status, tab) {
 
 function checkNewTab(tab) {
   for (let url of badDomains) {
+    console.log([url, tab.url]);
     if (tab.url.indexOf(url) > -1) {
       chrome.tabs.update(tab.id, { url: redirectTo });
       break;
@@ -46,7 +47,7 @@ function checkNewTab(tab) {
 function onContextMenuClick(info) {
   chrome.storage.sync.set({
     redirectTo: info.pageUrl
-  }, function() {
+  }, function () {
     init();
   });
 }
